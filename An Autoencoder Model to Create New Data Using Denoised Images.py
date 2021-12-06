@@ -18,10 +18,10 @@ from skimage.viewer import ImageViewer
 from skimage.transform import resize
 import numpy as np
 
-IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'
+IMAGE_PATH = 'E:/dataset/train/class1/'
 
-IMG_HEIGHT = 224
-IMG_WIDTH = 224
+IMG_HEIGHT = 28
+IMG_WIDTH = 28
 IMG_CHANNELS = 3
 
 import numpy as np
@@ -55,7 +55,7 @@ def _bernoulli(p, shape, *, random_state):
     if p == 1:
         return np.ones(shape, dtype=bool)
     return random_state.random(shape) <= p
-def random_noise(image, mode='gaussian', seed=None, clip=True, **kwargs):
+def random_noise(image, mode='s&p', seed=None, clip=True, **kwargs):
     """
     Function to add random noise of various types to a floating-point image.
     Parameters
@@ -238,7 +238,7 @@ def random_noise(image, mode='gaussian', seed=None, clip=True, **kwargs):
 
 
 def preprocess(array):
-    array = array.astype("float32") 
+    array = array.astype("float32")/255
     return array
    
 IMG_Dataset = next(os.walk(IMAGE_PATH))[2]
@@ -248,9 +248,13 @@ noisy_Inputs= np.zeros((len(IMG_Dataset), IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS),d
 for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
     Images = imread (IMAGE_PATH + f)[:,:,:IMG_CHANNELS]
     Images=resize(Images,(IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS))
+    Images=Images*255
+    Images=Images.astype("uint8")
     Inputs[n] = Images
+    # imsave((IMAGE_PATH + f+'_1.tif'), Images)
+    
     Images=random_noise(Images)
-    # imsave((IMAGE_PATH + f+'_.tif'), Images)
+    # imsave((IMAGE_PATH + f+'_2.tif'), Images)
     noisy_Inputs[n] = Images
 
 
@@ -272,18 +276,19 @@ autoencoder = Model(input, x)
 autoencoder.compile(optimizer="adam", loss="binary_crossentropy")
 autoencoder.summary()
 
+noisy_Inputs=preprocess(noisy_Inputs)
+Inputs=preprocess(Inputs)
+    
 autoencoder.fit(
     x=noisy_Inputs,
     y=Inputs,
-    epochs=10,
+    epochs=50,
     batch_size=25,
     shuffle=True,
 )
 
 predictions = autoencoder.predict(noisy_Inputs)
 for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
-    imsave((IMAGE_PATH + f+'_restored.tif'), predictions[n]*255)
-    
-temp1=Inputs[1,:,:,:]
-temp2=noisy_Inputs[1,:,:,:]
-temp3=predictions[1,:,:,:]
+    out=predictions[n]*255;
+    out=out.astype("uint8")
+    imsave((IMAGE_PATH + f+'_restored.tif'), out)
