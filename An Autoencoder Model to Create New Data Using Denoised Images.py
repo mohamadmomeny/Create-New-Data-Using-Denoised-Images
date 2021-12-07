@@ -1,24 +1,22 @@
-import numpy as np
-import tensorflow as tf
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-from tensorflow.keras import layers
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.models import Model
-import sys
-import glob
-import random
-from tqdm import tqdm
-from PIL import Image
-from keras.preprocessing import image
-from skimage.transform import resize
-from skimage.io import imread, imshow, imsave
-from skimage.viewer import ImageViewer
-from skimage.transform import resize
-import numpy as np
+"""
+******************************************************************************
+An Autoencoder Model to Create New Data Using Denoised Images Corrupted by 
+the Speckle, Gaussian, Poisson, and impulse Noise
+******************************************************************************
 
-IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'
+The images, corrupted by the Speckle, Gaussian, Poisson, and impulse Noise, 
+can be restored by enhancement approaches such as deep autoencoder networks. 
+However, depending on the noise type and density, the pixel values in the 
+restored image and the original noise-free image are not exactly equal. 
+We aim to leverage the dissimilarity between restored and original pixels 
+as a data augmentation strategy. First, noise of specific type and density 
+is added to the image. Then, the noise is partially removed from the image 
+by using the proposed autoencoder. The denoising autoencoder aims to produce 
+the output from the noisy input, where the target is set as the original images. 
+Finally, the restored images are used as augmented data.
+"""
+
+IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'  #The path of the dataset
 
 noiseType='gaussian'
 """
@@ -67,7 +65,28 @@ IMG_HEIGHT = 28  # Image height
 IMG_WIDTH = 28 # Image width
 IMG_CHANNELS = 3 # Image channel
 
+"""
+You can run!
+"""
+
 import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+from tensorflow.keras import layers
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Model
+import sys
+import glob
+import random
+from tqdm import tqdm
+from PIL import Image
+from keras.preprocessing import image
+from skimage.transform import resize
+from skimage.io import imread, imshow, imsave
+from skimage.viewer import ImageViewer
+from skimage.transform import resize
 import random
 import cv2
 
