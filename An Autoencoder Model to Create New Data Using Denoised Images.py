@@ -17,18 +17,13 @@ Finally, the restored images are used as augmented data.
 """
 
 IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'  #The path of the original dataset
-New_Data_Path='E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/' #The path of the new dataset
+New_Data_Path='E:/Sel/Matlab Code/newDataset_227_227_3/Train/P/' #The path of the new dataset
 
-noiseType='gaussian'
+noiseType='speckle'
 """
 One of the following strings, selecting the type of noise to add:
 - 'gaussian'  Gaussian-distributed additive noise.
-- 'localvar'  Gaussian-distributed additive noise, with specified
-              local variance at each point of `image`.
 - 'poisson'   Poisson-distributed noise generated from the data.
-- 'salt'      Replaces random pixels with 1.
-- 'pepper'    Replaces random pixels with 0 (for unsigned images) or
-              -1 (for signed images).
 - 's&p'       Replaces random pixels with either 1 or `low_val`, where
               `low_val` is 0 for unsigned images or -1 for signed
               images.
@@ -36,24 +31,18 @@ One of the following strings, selecting the type of noise to add:
               n is Gaussian noise with specified mean & variance.
 """
 
-kwargs=[0.01,0.001]
-"""
-allowedkwargs = {
-    'gaussian_values': ['mean', 'var'],
-    'localvar_values': ['local_vars'],
-    'sp_values': ['amount'],
-    's&p_values': ['amount', 'salt_vs_pepper'],
-    'poisson_values': []}
+mean= 0.0
+var= 0.1
+amount= 0.05
+salt_vs_pepper= 0.5
 
+"""
 mean : float, optional
     Mean of random distribution. Used in 'gaussian' and 'speckle'.
     Default : 0.
 var : float, optional
     Variance of random distribution. Used in 'gaussian' and 'speckle'.
     Note: variance = (standard deviation) ** 2. Default : 0.01
-local_vars : ndarray, optional
-    Array of positive floats, same shape as `image`, defining the local
-    variance at every image point. Used in 'localvar'.
 amount : float, optional
     Proportion of image pixels to replace with noise on range [0, 1].
     Used in 'salt', 'pepper', and 'salt & pepper'. Default : 0.05
@@ -90,6 +79,8 @@ from skimage.viewer import ImageViewer
 from skimage.transform import resize
 import random
 import cv2
+
+__all__ = ['random_noise']
 
 def _bernoulli(p, shape, *, random_state):
     """
@@ -313,9 +304,18 @@ for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
     Images=Images*255
     Images=Images.astype("uint8")
     Inputs[n] = Images
-    # imsave((IMAGE_PATH + f+'_1.tif'), Images)
     
-    Images=random_noise(Images,noiseType,kwargs)
+    # imsave((IMAGE_PATH + f+'_1.tif'), Images)
+    if noiseType=='gaussian':
+        Images=random_noise(Images,noiseType, mean= mean, var= var)
+    elif noiseType=='poisson':
+        Images=random_noise(Images,noiseType,)
+    elif noiseType=='s&p':
+        Images=random_noise(Images,noiseType, amount= amount, salt_vs_pepper= salt_vs_pepper)
+    elif noiseType=='speckle':
+        Images=random_noise(Images,noiseType, mean= mean, var= var)
+    
+    
     # imsave((IMAGE_PATH + f+'_2.tif'), Images)
     noisy_Inputs[n] = Images
 
