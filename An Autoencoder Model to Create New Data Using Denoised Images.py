@@ -16,7 +16,8 @@ the output from the noisy input, where the target is set as the original images.
 Finally, the restored images are used as augmented data.
 """
 
-IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'  #The path of the dataset
+IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'  #The path of the original dataset
+New_Data_Path='E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/' #The path of the new dataset
 
 noiseType='gaussian'
 """
@@ -352,4 +353,4 @@ predictions = autoencoder.predict(noisy_Inputs)
 for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
     out=predictions[n]*255;
     out=out.astype("uint8")
-    imsave((IMAGE_PATH + f+'_restored.tif'), out)
+    imsave((New_Data_Path + f+'_restored.tif'), out)
