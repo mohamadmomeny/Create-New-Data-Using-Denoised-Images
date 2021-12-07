@@ -17,7 +17,7 @@ Finally, the restored images are used as augmented data.
 """
 
 IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'  #The path of the original dataset
-New_Data_Path='E:/Sel/Matlab Code/newDataset_227_227_3/Train/P/' #The path of the new dataset
+New_Data_Path='E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/' #The path of the new dataset
 
 noiseType='speckle' # Or another noise, 'gaussian', 'poisson', 's&p'
 """
@@ -50,9 +50,11 @@ salt_vs_pepper : float, optional
     Proportion of salt vs. pepper noise for 's&p' on range [0, 1].
     Higher values represent more salt. Default : 0.5 (equal amounts)
 """
+epochs=20
+batch_size=100
 
-IMG_HEIGHT = 28  # Image height
-IMG_WIDTH = 28 # Image width
+IMG_HEIGHT = 224  # Image height
+IMG_WIDTH = 224 # Image width
 IMG_CHANNELS = 3 # Image channel
 
 """
@@ -316,7 +318,7 @@ for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
         Images=random_noise(Images,noiseType, mean= mean, var= var)
     
     
-    # imsave((IMAGE_PATH + f+'_2.tif'), Images)
+    imsave((New_Data_Path + f+'_noisy_.tif'), Images)
     noisy_Inputs[n] = Images
 
 
@@ -344,8 +346,8 @@ Inputs=preprocess(Inputs)
 autoencoder.fit(
     x=noisy_Inputs,
     y=Inputs,
-    epochs=50,
-    batch_size=25,
+    epochs=epochs,
+    batch_size=batch_size,
     shuffle=True,
 )
 
