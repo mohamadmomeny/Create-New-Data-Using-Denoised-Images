@@ -16,8 +16,8 @@ the output from the noisy input, where the target is set as the original images.
 Finally, the restored images are used as augmented data.
 """
 
-IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'  #The path of the original dataset
-New_Data_Path='E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/' #The path of the new dataset
+IMAGE_PATH = 'E:/Sel/Code/Dataset_227_227_3/Train/P/'  #The path of the original dataset
+New_Data_Path='E:/Sel/Code/Dataset_227_227_3/Train/P/' #The path of the new dataset
 
 noiseType='speckle' # Or another noise, 'gaussian', 'poisson', 's&p'
 """
