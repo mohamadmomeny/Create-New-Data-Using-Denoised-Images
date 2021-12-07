@@ -19,7 +19,7 @@ Finally, the restored images are used as augmented data.
 IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'  #The path of the original dataset
 New_Data_Path='E:/Sel/Matlab Code/newDataset_227_227_3/Train/P/' #The path of the new dataset
 
-noiseType='speckle'
+noiseType='speckle' # Or another noise, 'gaussian', 'poisson', 's&p'
 """
 One of the following strings, selecting the type of noise to add:
 - 'gaussian'  Gaussian-distributed additive noise.
@@ -31,10 +31,10 @@ One of the following strings, selecting the type of noise to add:
               n is Gaussian noise with specified mean & variance.
 """
 
-mean= 0.0
-var= 0.1
-amount= 0.05
-salt_vs_pepper= 0.5
+mean= 0.0 # Gaussian and Speckle noise
+var= 0.01 # Gaussian and Speckle noise
+amount= 0.05 # Impulse noise
+salt_vs_pepper= 0.5 # Impulse noise
 
 """
 mean : float, optional
