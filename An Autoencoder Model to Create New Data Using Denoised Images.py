@@ -18,17 +18,59 @@ from skimage.viewer import ImageViewer
 from skimage.transform import resize
 import numpy as np
 
-IMAGE_PATH = 'E:/dataset/train/class1/'
+IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train/P/'
 
-IMG_HEIGHT = 28
-IMG_WIDTH = 28
-IMG_CHANNELS = 3
+noiseType='gaussian'
+"""
+One of the following strings, selecting the type of noise to add:
+- 'gaussian'  Gaussian-distributed additive noise.
+- 'localvar'  Gaussian-distributed additive noise, with specified
+              local variance at each point of `image`.
+- 'poisson'   Poisson-distributed noise generated from the data.
+- 'salt'      Replaces random pixels with 1.
+- 'pepper'    Replaces random pixels with 0 (for unsigned images) or
+              -1 (for signed images).
+- 's&p'       Replaces random pixels with either 1 or `low_val`, where
+              `low_val` is 0 for unsigned images or -1 for signed
+              images.
+- 'speckle'   Multiplicative noise using out = image + n*image, where
+              n is Gaussian noise with specified mean & variance.
+"""
+
+kwargs=[0.01,0.001]
+"""
+allowedkwargs = {
+    'gaussian_values': ['mean', 'var'],
+    'localvar_values': ['local_vars'],
+    'sp_values': ['amount'],
+    's&p_values': ['amount', 'salt_vs_pepper'],
+    'poisson_values': []}
+
+mean : float, optional
+    Mean of random distribution. Used in 'gaussian' and 'speckle'.
+    Default : 0.
+var : float, optional
+    Variance of random distribution. Used in 'gaussian' and 'speckle'.
+    Note: variance = (standard deviation) ** 2. Default : 0.01
+local_vars : ndarray, optional
+    Array of positive floats, same shape as `image`, defining the local
+    variance at every image point. Used in 'localvar'.
+amount : float, optional
+    Proportion of image pixels to replace with noise on range [0, 1].
+    Used in 'salt', 'pepper', and 'salt & pepper'. Default : 0.05
+salt_vs_pepper : float, optional
+    Proportion of salt vs. pepper noise for 's&p' on range [0, 1].
+    Higher values represent more salt. Default : 0.5 (equal amounts)
+"""
+
+IMG_HEIGHT = 28  # Image height
+IMG_WIDTH = 28 # Image width
+IMG_CHANNELS = 3 # Image channel
 
 import numpy as np
 import random
 import cv2
 
-__all__ = ['random_noise']
 def _bernoulli(p, shape, *, random_state):
     """
     Bernoulli trials at a given probability of a given size.
@@ -253,7 +295,7 @@ for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
     Inputs[n] = Images
     # imsave((IMAGE_PATH + f+'_1.tif'), Images)
     
-    Images=random_noise(Images)
+    Images=random_noise(Images,noiseType,kwargs)
     # imsave((IMAGE_PATH + f+'_2.tif'), Images)
     noisy_Inputs[n] = Images
 
