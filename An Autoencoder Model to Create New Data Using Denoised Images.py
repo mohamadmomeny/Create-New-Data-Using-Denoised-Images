@@ -17,7 +17,7 @@ Finally, the restored images are used as augmented data.
 """
 
             
-IMAGE_PATH = 'E:/Dataset/Train'  #The path of the original dataset
+IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train'  #The path of the original dataset
       
 noiseType='speckle' # Or another noise, 'gaussian', 'poisson', 's&p'
 """
@@ -50,7 +50,7 @@ salt_vs_pepper : float, optional
     Proportion of salt vs. pepper noise for 's&p' on range [0, 1].
     Higher values represent more salt. Default : 0.5 (equal amounts)
 """
-epochs=20
+epochs=100
 batch_size=5
 
 optimizer="adam"
@@ -336,6 +336,8 @@ input = layers.Input(shape=(IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS))
 # Encoder
 x = layers.Conv2D(32, (3, 3), activation="relu", padding="same")(input)
 x = layers.MaxPooling2D((2, 2), padding="same")(x)
+x = layers.Conv2D(32, (3, 3), activation="relu", padding="same")(x)
+x = layers.MaxPooling2D((2, 2), padding="same")(x)
 x = layers.Conv2D(64, (3, 3), activation="relu", padding="same")(x)
 x = layers.MaxPooling2D((2, 2), padding="same")(x)
 x = layers.Conv2D(64, (3, 3), activation="relu", padding="same")(x)
@@ -345,11 +347,12 @@ x = layers.MaxPooling2D((2, 2), padding="same")(x)
 x = layers.Conv2DTranspose(64, (3, 3), strides=2, activation="relu", padding="same")(x)
 x = layers.Conv2DTranspose(64, (3, 3), strides=2, activation="relu", padding="same")(x)
 x = layers.Conv2DTranspose(32, (3, 3), strides=2, activation="relu", padding="same")(x)
+x = layers.Conv2DTranspose(32, (3, 3), strides=2, activation="relu", padding="same")(x)
 x = layers.Conv2D(IMG_CHANNELS, (3, 3), activation="sigmoid", padding="same")(x)
 
 # Autoencoder
 autoencoder = Model(input, x)
-autoencoder.compile(optimizer="adam", loss="binary_crossentropy")
+autoencoder.compile(optimizer=optimizer, loss=loss)
 autoencoder.summary()
 
 noisy_Inputs=preprocess(noisy_Inputs)
