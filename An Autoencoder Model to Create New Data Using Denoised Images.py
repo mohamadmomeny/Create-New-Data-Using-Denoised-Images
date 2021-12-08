@@ -17,7 +17,7 @@ Finally, the restored images are used as augmented data.
 """
 
             
-IMAGE_PATH = 'E:/Dataset/Train'  #The path of the original dataset
+IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train'  #The path of the original dataset
       
 noiseType='speckle' # Or another noise, 'gaussian', 'poisson', 's&p'
 """
