@@ -16,9 +16,9 @@ the output from the noisy input, where the target is set as the original images.
 Finally, the restored images are used as augmented data.
 """
 
-IMAGE_PATH = 'E:/Sel/Code/Dataset_227_227_3/Train/P/'  #The path of the original dataset
-New_Data_Path='E:/Sel/Code/Dataset_227_227_3/Train/P/' #The path of the new dataset
-
+            
+IMAGE_PATH = 'E:/Sel/Matlab Code/Dataset_227_227_3/Train'  #The path of the original dataset
+      
 noiseType='speckle' # Or another noise, 'gaussian', 'poisson', 's&p'
 """
 One of the following strings, selecting the type of noise to add:
@@ -51,7 +51,10 @@ salt_vs_pepper : float, optional
     Higher values represent more salt. Default : 0.5 (equal amounts)
 """
 epochs=20
-batch_size=100
+batch_size=5
+
+optimizer="adam"
+loss="binary_crossentropy"
 
 IMG_HEIGHT = 224  # Image height
 IMG_WIDTH = 224 # Image width
@@ -64,7 +67,6 @@ You can run!
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-import numpy as np
 import os
 from tensorflow.keras import layers
 from tensorflow.keras.datasets import mnist
@@ -77,10 +79,10 @@ from PIL import Image
 from keras.preprocessing import image
 from skimage.transform import resize
 from skimage.io import imread, imshow, imsave
-from skimage.viewer import ImageViewer
-from skimage.transform import resize
-import random
 import cv2
+
+img_data_array=[]
+class_name=[]
 
 __all__ = ['random_noise']
 
@@ -295,19 +297,27 @@ def random_noise(image, mode='s&p', seed=None, clip=True, **kwargs):
 def preprocess(array):
     array = array.astype("float32")/255
     return array
-   
-IMG_Dataset = next(os.walk(IMAGE_PATH))[2]
 
-Inputs = np.zeros((len(IMG_Dataset), IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS),dtype = np.uint8)
-noisy_Inputs= np.zeros((len(IMG_Dataset), IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS),dtype = np.uint8)
-for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
-    Images = imread (IMAGE_PATH + f)[:,:,:IMG_CHANNELS]
+
+image_list=[]
+n=0
+for path, subdirs, files in os.walk(IMAGE_PATH):
+    for name in files:  
+        filename=path+'/'+name
+        filename=filename.replace('\\','/')
+        image_list.append(filename)
+        n=n+1     
+
+Inputs = np.zeros((n, IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS),dtype = np.uint8)
+noisy_Inputs= np.zeros((n, IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS),dtype = np.uint8)
+
+for i in tqdm(range(0,n)):
+    filename = image_list[i]
+    Images = imread(filename)
     Images=resize(Images,(IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS))
     Images=Images*255
     Images=Images.astype("uint8")
-    Inputs[n] = Images
-    
-    # imsave((IMAGE_PATH + f+'_1.tif'), Images)
+    Inputs[i] = Images
     if noiseType=='gaussian':
         Images=random_noise(Images,noiseType, mean= mean, var= var)
     elif noiseType=='poisson':
@@ -316,10 +326,9 @@ for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
         Images=random_noise(Images,noiseType, amount= amount, salt_vs_pepper= salt_vs_pepper)
     elif noiseType=='speckle':
         Images=random_noise(Images,noiseType, mean= mean, var= var)
-    
-    
-    imsave((New_Data_Path + f+'_noisy_.tif'), Images)
-    noisy_Inputs[n] = Images
+    imsave((filename+'__'+noiseType+'_noise_.tif'), Images)
+    noisy_Inputs[i] = Images
+
 
 
 input = layers.Input(shape=(IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS))
@@ -329,8 +338,11 @@ x = layers.Conv2D(32, (3, 3), activation="relu", padding="same")(input)
 x = layers.MaxPooling2D((2, 2), padding="same")(x)
 x = layers.Conv2D(64, (3, 3), activation="relu", padding="same")(x)
 x = layers.MaxPooling2D((2, 2), padding="same")(x)
+x = layers.Conv2D(64, (3, 3), activation="relu", padding="same")(x)
+x = layers.MaxPooling2D((2, 2), padding="same")(x)
 
 # Decoder
+x = layers.Conv2DTranspose(64, (3, 3), strides=2, activation="relu", padding="same")(x)
 x = layers.Conv2DTranspose(64, (3, 3), strides=2, activation="relu", padding="same")(x)
 x = layers.Conv2DTranspose(32, (3, 3), strides=2, activation="relu", padding="same")(x)
 x = layers.Conv2D(IMG_CHANNELS, (3, 3), activation="sigmoid", padding="same")(x)
@@ -352,7 +364,9 @@ autoencoder.fit(
 )
 
 predictions = autoencoder.predict(noisy_Inputs)
-for n, f in tqdm(enumerate(IMG_Dataset), total = len(IMG_Dataset)):
-    out=predictions[n]*255;
+
+for i in tqdm(range(0,n)):
+    filename = image_list[i]
+    out=predictions[i]*255;
     out=out.astype("uint8")
-    imsave((New_Data_Path + f+'_restored.tif'), out)
+    imsave((filename +'__' + noiseType+'_restored.tif'), out)
