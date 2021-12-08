@@ -4,16 +4,17 @@ An Autoencoder Model to Create New Data Using Denoised Images Corrupted by
 the Speckle, Gaussian, Poisson, and impulse Noise
 ******************************************************************************
 
-The images, corrupted by the Speckle, Gaussian, Poisson, and impulse Noise, 
-can be restored by enhancement approaches such as deep autoencoder networks. 
-However, depending on the noise type and density, the pixel values in the 
-restored image and the original noise-free image are not exactly equal. 
-We aim to leverage the dissimilarity between restored and original pixels 
-as a data augmentation strategy. First, noise of specific type and density 
-is added to the image. Then, the noise is partially removed from the image 
-by using the proposed autoencoder. The denoising autoencoder aims to produce 
-the output from the noisy input, where the target is set as the original images. 
-Finally, the restored images are used as augmented data.
+The images, corrupted by the Speckle, Gaussian, Poisson, and impulse Noise, can
+be restored by image enhancement approaches such as deep autoencoder networks.
+The pixel values in the restored data (enhanced image) and the original noise-
+free image are not accurately equal, depending on noise density level. Here, 
+the dissimilarity between restored and original pixels are used as a data 
+augmentation approach. Initially, noise of given type and density is added to 
+the data. Next, the noise is partially eliminated from the image by employing 
+the deep convolutional autoencoder. The denoising deep convolutional autoencoder
+creates the output (new data) from the noisy input, where the target is set as 
+the original images. As a final point, the restored images are employed as new 
+augmented data.
 """
 
             
