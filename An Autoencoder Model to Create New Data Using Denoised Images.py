@@ -1,6 +1,6 @@
 """
 ******************************************************************************
-An Autoencoder Model to Create New Data Using Denoised Images Corrupted by 
+An Autoencoder Model to Create New Data Using Noisy and Denoised Images Corrupted by 
 the Speckle, Gaussian, Poisson, and impulse Noise
 ******************************************************************************
 
