@@ -6,7 +6,7 @@ The images, corrupted by the Speckle, Gaussian, Poisson, and impulse Noise, can 
 Deep Learning, Data augmentation, Noise, Denoised Images, Speckle Noise, Gaussian Noise, poisson Noise, Impulse Noise
 
 ## Cite
-#### Please add the papers into reference if the repository is helpful to you.
+#### Please add the following papers into reference if the repository is helpful to you.
 Mohammad Momeny, Ali Asghar Neshat, Mohammad Arafat Hussain, Solmaz Kia, Mahmoud Marhamati, Ahmad Jahanbakhshi, Ghassan Hamarneh, Learning-to-Augment Strategy using Noisy and Denoised Data: Improving Generalizability of Deep CNN for the Detection of COVID-19 in X-ray Images, Computers in Biology and Medicine, Volume 136, 2021, 104704, https://doi.org/10.1016/j.compbiomed.2021.104704. (https://www.sciencedirect.com/science/article/pii/S0010482521004984)
 
 Mohammad Momeny, Ali Mohammad Latif, Mehdi Agha Sarram, Razieh Sheikhpour, Yu Dong Zhang, A noise robust convolutional neural network for image classification, Results in Engineering, Volume 10, June 2021, 100225, https://doi.org/10.1016/j.rineng.2021.100225. (https://www.sciencedirect.com/science/article/pii/S2590123021000268)
