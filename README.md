@@ -12,4 +12,4 @@ Mohammad Momeny, Ali Asghar Neshat, Mohammad Arafat Hussain, Solmaz Kia, Mahmoud
 Mohammad Momeny, Ali Mohammad Latif, Mehdi Agha Sarram, Razieh Sheikhpour, Yu Dong Zhang, A noise robust convolutional neural network for image classification, Results in Engineering, Volume 10, June 2021, 100225, https://doi.org/10.1016/j.rineng.2021.100225. (https://www.sciencedirect.com/science/article/pii/S2590123021000268)
 
 ## Email
-Feel free to ask any questions. Dr. Mohammad Momeny, mohamad.momeny@gmail.com
+Feel free to ask any questions. Mohammad Momeny, a Ph.D. in Computer Engineering, mohamad.momeny@gmail.com
