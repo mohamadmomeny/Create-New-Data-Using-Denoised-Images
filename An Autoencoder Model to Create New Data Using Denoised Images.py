@@ -18,7 +18,7 @@ augmented data.
 """
 
             
-IMAGE_PATH = 'E:/Dataset/Train'  #The path of the original dataset
+IMAGE_PATH = 'D:/Projects/Manuscripts/Pest detection/Code/Dataset_224_224_3/Train'  #The path of the original dataset
       
 noiseType='speckle' # Or another noise, 'gaussian', 'poisson', 's&p'
 """
@@ -33,8 +33,8 @@ One of the following strings, selecting the type of noise to add:
 """
 
 mean= 0.0 # Gaussian and Speckle noise
-var= 0.01 # Gaussian and Speckle noise
-amount= 0.05 # Impulse noise
+var= 0.002 # Gaussian and Speckle noise
+amount= 0.02 # Impulse noise
 salt_vs_pepper= 0.5 # Impulse noise
 
 """
